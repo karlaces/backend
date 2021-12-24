@@ -15,11 +15,15 @@ class UserController extends Controller
         try {
             $users = User::with("userdomicilio")
             ->select("*", DB::raw("TIMESTAMPDIFF(YEAR, DATE(fecha_nacimiento), current_date) AS edad"))
-            ->get()->toArray();
+            ->get();
+            $count =$users->count();
+            
+            $data = $users->toArray();
 
             return response()->json(
                 [
-                  "users"=> $users,
+                  "data"=> $data,
+                  "count"=>$count
                 ],200
               );
         } catch (\Exception $e) {
